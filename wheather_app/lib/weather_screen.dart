@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:wheather_app/additional_info_item.dart' show AdditionalInfoItem;
 import 'package:wheather_app/secretkey.dart';
+import 'package:wheather_app/weather_location.dart' show determinePosition;
 import 'package:wheather_app/wethear_forecast_item.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,12 +20,21 @@ class WeatherScreen extends StatefulWidget {
 
 class _WeatherScreenState extends State<WeatherScreen> {
   Future<Map<String, dynamic>> getCurrentWeather() async {
+    final pos = await determinePosition();
+
+    final latitude = pos.latitude;
+    final longitude = pos.longitude;
+
     try {
-      String cityName = 'Taliparamba';
       final result = await http.get(
         Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$apiKey',
-          //https://api.openweathermap.org/data/2.5/forecast?q=London&APPID=153077b42c61365c61a89d612c4b3826
+          'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey',
+
+          //https://api.openweathermap.org/data/2.5/forecast?q=T&APPID=153077b42c61365c61a89d612c4b3826
+          //  https://api.openweathermap.org/data/3.0/onecall?lat=21.9974&lon=79.0011&appid=153077b42c61365c61a89d612c4b3826
+
+          //https://api.openweathermap.org/data/2.5/forecast?lat=21.9974&lon=79.0011&appid=153077b42c61365c61a89d612c4b3826
+          //https://api.openweathermap.org/data/3.0/onecall?lat=21.9974&lon=79.0011&appid=153077b42c61365c61a89d612c4b3826
         ),
       );
 
