@@ -14,7 +14,7 @@ class WeatherForecastItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 130,
+      width: 125,
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(

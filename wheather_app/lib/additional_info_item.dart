@@ -13,25 +13,22 @@ class AdditionalInfoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 125,
-      child: Column(
-        children: [
-          icon,
-          SizedBox(height: 10),
-          Text(
-            propertName,
-            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
-          ),
+    return Column(
+      children: [
+        icon,
+        SizedBox(height: 5),
+        Text(
+          propertName,
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
+        ),
 
-          SizedBox(height: 10),
+        SizedBox(height: 5),
 
-          Text(
-            propertyValue,
-            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
-          ),
-        ],
-      ),
+        Text(
+          propertyValue,
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20),
+        ),
+      ],
     );
   }
 }

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:wheather_app/additional_info_item.dart' show AdditionalInfoItem;
 import 'package:wheather_app/secretkey.dart';
 import 'package:wheather_app/weather_location.dart' show determinePosition;
@@ -19,6 +18,14 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
+  late Future<Map<String, dynamic>> _weatherFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _weatherFuture = getCurrentWeather();
+  }
+
   Future<Map<String, dynamic>> getCurrentWeather() async {
     final pos = await determinePosition();
 
@@ -29,12 +36,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
       final result = await http.get(
         Uri.parse(
           'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey',
-
-          //https://api.openweathermap.org/data/2.5/forecast?q=T&APPID=153077b42c61365c61a89d612c4b3826
-          //  https://api.openweathermap.org/data/3.0/onecall?lat=21.9974&lon=79.0011&appid=153077b42c61365c61a89d612c4b3826
-
-          //https://api.openweathermap.org/data/2.5/forecast?lat=21.9974&lon=79.0011&appid=153077b42c61365c61a89d612c4b3826
-          //https://api.openweathermap.org/data/3.0/onecall?lat=21.9974&lon=79.0011&appid=153077b42c61365c61a89d612c4b3826
         ),
       );
 
@@ -60,20 +61,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
         centerTitle: true,
         leading: IconButton(
           onPressed: widget.onToggle,
+
           icon: Icon(Icons.toggle_on),
         ),
 
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {});
+              setState(() {
+                _weatherFuture = getCurrentWeather();
+              });
             },
             icon: Icon(Icons.refresh),
           ),
         ],
       ),
       body: FutureBuilder(
-        future: getCurrentWeather(),
+        future: _weatherFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: const CircularProgressIndicator.adaptive());
@@ -214,9 +218,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     style: TextStyle(fontWeight: FontWeight.w500, fontSize: 25),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
 
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     AdditionalInfoItem(
                       propertName: "Humidity",
