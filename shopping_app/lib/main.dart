@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_app/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/navigator_page.dart';
+import 'package:shopping_app/shopping_cart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,7 +27,8 @@ class _MyAppState extends State<MyApp> {
         fontFamily: "Lato",
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyanAccent),
       ),
-      home: HomePage(),
+      home: ChangeNotifierProvider(create: (_) => ShoppingCart(),
+      child: NavigatorPage(),)
     );
   }
 }

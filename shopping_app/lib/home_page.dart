@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_app/shopping_cart.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,40 +10,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> filter = const ['All', 'Adidas', 'Puma', 'Nike', 'Reebok'];
+   final List<String> filter = const ['All', 'Adidas', 'Puma', 'Nike', 'Reebok'];
 
   List<Map<String, dynamic>> dummyShoeData = [
-    {
-      "name": "Air Max 270",
-      "brand": "Nike",
-      "price": 129.99,
-      "image": "https://picsum.photos/300/300",
-    },
-    {
-      "name": "Ultraboost 22",
-      "brand": "Adidas",
-      "price": 179.99,
-      "image": "https://picsum.photos/300/300",
-    },
-    {
-      "name": "Classic Leather",
-      "brand": "Reebok",
-      "price": 89.99,
-      "image": "https://picsum.photos/300/300",
-    },
-    {
-      "name": "Chuck Taylor All Star",
-      "brand": "Nike",
-      "price": 55.00,
-      "image": "https://picsum.photos/300/300",
-    },
-    {
-      "name": "Suede Classic XXI",
-      "brand": "Puma",
-      "price": 65.00,
-      "image": "https://picsum.photos/300/300",
-    },
-  ];
+  {
+    "id": 1,
+    "name": "Air Max 270",
+    "brand": "Nike",
+    "price": 129.99,
+    "image": "https://picsum.photos/300/300",
+  },
+  {
+    "id": 2,
+    "name": "Ultraboost 22",
+    "brand": "Adidas",
+    "price": 179.99,
+    "image": "https://picsum.photos/300/300",
+  },
+  {
+    "id": 3,
+    "name": "Classic Leather",
+    "brand": "Reebok",
+    "price": 89.99,
+    "image": "https://picsum.photos/300/300",
+  },
+  {
+    "id": 4,
+    "name": "Chuck Taylor All Star",
+    "brand": "Nike",
+    "price": 55.00,
+    "image": "https://picsum.photos/300/300",
+  },
+  {
+    "id": 5,
+    "name": "Suede Classic XXI",
+    "brand": "Puma",
+    "price": 65.00,
+    "image": "https://picsum.photos/300/300",
+  },
+];
+
   final searchBox = TextEditingController();
   List<Map<String, dynamic>> get filteredData {
     if (selectedFilter == 'All' && searchBox.text.isEmpty) return dummyShoeData;
@@ -84,9 +92,7 @@ class _HomePageState extends State<HomePage> {
         topLeft: Radius.circular(50),
       ),
     );
-
-    return Scaffold(
-      body: SafeArea(
+    return  SafeArea(
         child: Column(
           children: [
             Row(
@@ -172,8 +178,7 @@ class _HomePageState extends State<HomePage> {
                       vertical: 20,
                     ),
                     child: SizedBox(
-                      height: 400,
-
+                      height: 420,
                       child: Card(
                         child: Column(
                           children: [
@@ -202,7 +207,18 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
 
-                            Image.network('https://picsum.photos/300/300'),
+                            ClipOval(
+
+                             child: Image.network('https://picsum.photos/300/300')),
+                             Align(
+                              alignment: Alignment.centerRight,
+                              child: ElevatedButton(onPressed: (){
+                                final cart = Provider.of<ShoppingCart>(context);
+                                cart.addItem(data);
+                                setState(() {
+                                  
+                                });
+                              }, child: Icon(Icons.add)))
                           ],
                         ),
                       ),
@@ -213,7 +229,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }
